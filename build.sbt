@@ -27,7 +27,7 @@ libraryDependencies ++= Seq(
   "com.softwaremill.sttp.tapir" %% "tapir-http4s-server" % tapirVersion,
   "com.softwaremill.sttp.tapir" %% "tapir-json-circe"    % tapirVersion,
 
-  "co.fs2"        %% "fs2-core"    % fs2Version,
+//  "co.fs2"        %% "fs2-core"    % fs2Version,
   "org.typelevel" %% "cats-effect" % "3.2.9",
 
   // Зависимости для логирования

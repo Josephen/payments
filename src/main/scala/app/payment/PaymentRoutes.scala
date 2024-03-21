@@ -2,11 +2,13 @@ package app.payment
 
 import cats.effect.IO
 import domain.models.Payment
+import org.http4s.circe.CirceEntityEncoder._
 import org.http4s.circe.{ jsonEncoderOf, jsonOf }
-import org.http4s.{ EntityDecoder, EntityEncoder, HttpRoutes }
 import org.http4s.dsl.io._
+import org.http4s.{ EntityDecoder, EntityEncoder, HttpRoutes }
 import service.PaymentService
-import utils.ImplicitsConversions._
+
+import java.util.UUID
 
 class PaymentRoutes(
   paymentService: PaymentService
@@ -21,36 +23,39 @@ class PaymentRoutes(
 
     HttpRoutes.of[IO] {
 
-      case GET ->  Root / "status" =>
-      Ok(s"Server on")
+      case GET -> Root / "status" =>
+        Ok("Server on")
 
       // Создание платежа
       case req @ POST -> Root / "payments" =>
         for {
           payment <- req.as[Payment]
           createdId <- paymentService.create(payment)
-          resp <- Ok(s"Payment created with id: $createdId")
+          resp <- createdId.fold(
+            error => BadRequest(error.message),
+            id => Ok(s"Payment created with id: $id")
+          )
         } yield resp
 
       // Получение всех платежей
       case GET -> Root / "payments" =>
-        for {
-          payments <- paymentService.getAllPayments()
-          resp <- Ok(payments)
-        } yield resp
+        paymentService.getAllPayments.flatMap {
+          case Right(payments) => Ok(payments)
+          case Left(error) => InternalServerError(error.message)
+        }
 
       // Получение платежа по ID
       case GET -> Root / "payment" / id =>
-        for {
-          payment <- paymentService.getPayment(id)
-          resp <- payment.fold(NotFound(s"Payment with id $id not found"))(p => Ok(p))
-        } yield resp
+        paymentService.getPayment(id).flatMap {
+          case Right(payment) => Ok(payment)
+          case Left(error) => InternalServerError(error.message)
+        }
 
       // Обновление платежа
       case req @ PUT -> Root / "payment" / id =>
         for {
           payment <- req.as[Payment]
-          _ <- paymentService.updatePayment(payment.copy(id = id))
+          _ <- paymentService.updatePayment(payment.copy(id = UUID.fromString(id)))
           resp <- Ok(s"Payment with id $id updated successfully")
         } yield resp
 

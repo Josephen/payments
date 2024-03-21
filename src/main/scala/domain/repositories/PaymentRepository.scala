@@ -7,15 +7,14 @@ import java.util.UUID
 
 trait PaymentRepository {
 
-  def create(payment: Payment): IO[Long]
+  def create(payment: Payment): IO[Either[Throwable, Long]]
 
-  def getAll(): IO[List[Payment]]
+  def getAll(): IO[Either[Throwable, List[Payment]]]
 
-  def findById(id: UUID): IO[Option[Payment]]
+  def findById(id: UUID): IO[Either[Throwable, Option[Payment]]]
 
-  def update(payment: Payment): IO[Unit]
+  def update(payment: Payment): IO[Either[Throwable, Unit]]
 
-  def delete(id: UUID): IO[Unit]
+  def delete(id: UUID): IO[Either[Throwable, Unit]]
 
 }
-
