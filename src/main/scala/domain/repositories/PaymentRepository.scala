@@ -7,9 +7,9 @@ import java.util.UUID
 
 trait PaymentRepository {
 
-  def create(payment: Payment): IO[Either[Throwable, Long]]
+  def create(payment: Payment): IO[Either[Throwable, UUID]]
 
-  def getAll(): IO[Either[Throwable, List[Payment]]]
+  def getAll: IO[Either[Throwable, List[Payment]]]
 
   def findById(id: UUID): IO[Either[Throwable, Option[Payment]]]
 

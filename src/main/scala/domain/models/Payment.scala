@@ -26,7 +26,6 @@ object Payment {
   implicit val uuidMeta: Meta[UUID] =
     Meta[String].timap(UUID.fromString)(_.toString)
 
-  println(Read[Payment])
   implicit val paymentRead: Read[Payment] =
     Read[(UUID, BigDecimal, String, LocalDateTime)].map {
       case (id, amount, description, createdAt) => Payment(id, amount, description, createdAt)

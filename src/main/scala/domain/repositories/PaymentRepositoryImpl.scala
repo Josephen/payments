@@ -10,14 +10,14 @@ import java.util.UUID
 
 class PaymentRepositoryImpl(transactor: Transactor[IO]) extends PaymentRepository {
 
-  override def create(payment: Payment): IO[Either[Throwable, Long]] = {
+  override def create(payment: Payment): IO[Either[Throwable, UUID]] = {
     sql"""
          |INSERT INTO based.payments (amount, description)
          |VALUES (${payment.amount}, ${payment.description})
        """
       .stripMargin
       .update
-      .withUniqueGeneratedKeys[Long]("id")
+      .withUniqueGeneratedKeys[UUID]("id")
       .attemptSql
       .transact(transactor)
   }
@@ -30,7 +30,7 @@ class PaymentRepositoryImpl(transactor: Transactor[IO]) extends PaymentRepositor
       .transact(transactor)
   }
 
-  def getAll(): IO[Either[Throwable, List[Payment]]] =
+  def getAll: IO[Either[Throwable, List[Payment]]] =
     sql"SELECT id, amount, description FROM based.payments"
       .query[Payment]
       .to[List]
