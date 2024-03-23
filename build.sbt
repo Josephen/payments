@@ -11,11 +11,12 @@ val fs2Version = "3.1.0"
 
 libraryDependencies ++= Seq(
   // Зависимости для http4sd
-  "org.http4s" %% "http4s-blaze-server" % http4sVersion,
-  "org.http4s" %% "http4s-dsl"          % http4sVersion,
-  "org.http4s" %% "http4s-circe"        % http4sVersion,
-  "org.http4s" %% "http4s-blaze-client" % http4sVersion,
-  "org.http4s" %% "http4s-client"       % http4sVersion,
+  "org.http4s"    %% "http4s-blaze-server" % http4sVersion,
+  "org.http4s"    %% "http4s-dsl"          % http4sVersion,
+  "org.http4s"    %% "http4s-circe"        % http4sVersion,
+  "org.http4s"    %% "http4s-blaze-client" % http4sVersion,
+  "org.http4s"    %% "http4s-client"       % http4sVersion,
+  "org.typelevel" %% "cats-effect"         % "3.2.9",
 
   // Зависимости для Doobie
   "org.tpolecat" %% "doobie-core"     % doobieVersion,
@@ -28,8 +29,6 @@ libraryDependencies ++= Seq(
   "com.softwaremill.sttp.tapir" %% "tapir-openapi-docs"       % tapirVersion,
   "com.softwaremill.sttp.tapir" %% "tapir-openapi-circe-yaml" % tapirVersion,
 
-//  "co.fs2"        %% "fs2-core"    % fs2Version,
-  "org.typelevel" %% "cats-effect" % "3.2.9",
 
   // Зависимости для логирования
   "org.slf4j"      % "slf4j-api"       % "1.7.32",
