@@ -1,8 +1,8 @@
 package domain.models
 
 import doobie.{ Get, Meta, Read }
-import io.circe.{ Decoder, Encoder }
 import io.circe.generic.semiauto.{ deriveDecoder, deriveEncoder }
+import io.circe.{ Decoder, Encoder }
 import sttp.tapir.Schema
 import doobie.implicits.javatimedrivernative._
 

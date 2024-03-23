@@ -1,11 +1,12 @@
-package app.payment
+package endpoints.payment
 
 import cats.effect.IO
 import domain.models.Payment
 import org.http4s.circe.CirceEntityEncoder._
 import org.http4s.circe.{ jsonEncoderOf, jsonOf }
 import org.http4s.dsl.io._
-import org.http4s.{ EntityDecoder, EntityEncoder, HttpRoutes }
+import org.http4s.headers.`Content-Type`
+import org.http4s.{ EntityDecoder, EntityEncoder, HttpRoutes, MediaType }
 import service.PaymentService
 
 import java.util.UUID
@@ -65,6 +66,12 @@ class PaymentRoutes(
           _ <- paymentService.deletePayment(id)
           resp <- Ok(s"Payment with id $id deleted successfully")
         } yield resp
+
+      //api spec
+      case GET -> Root / "spec" =>
+          Ok(PaymentEndpoints.spec)
+          .map(_.withContentType(`Content-Type`(MediaType.application.json)))
+
     }
   }
 }

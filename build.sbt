@@ -19,13 +19,14 @@ libraryDependencies ++= Seq(
 
   // Зависимости для Doobie
   "org.tpolecat" %% "doobie-core"     % doobieVersion,
-  "org.tpolecat" %% "doobie-hikari"   % doobieVersion,
   "org.tpolecat" %% "doobie-postgres" % doobieVersion,
 
   // Зависимости для Tapir
-  "com.softwaremill.sttp.tapir" %% "tapir-core"          % tapirVersion,
-  "com.softwaremill.sttp.tapir" %% "tapir-http4s-server" % tapirVersion,
-  "com.softwaremill.sttp.tapir" %% "tapir-json-circe"    % tapirVersion,
+  "com.softwaremill.sttp.tapir" %% "tapir-core"               % tapirVersion,
+  "com.softwaremill.sttp.tapir" %% "tapir-http4s-server"      % tapirVersion,
+  "com.softwaremill.sttp.tapir" %% "tapir-json-circe"         % tapirVersion,
+  "com.softwaremill.sttp.tapir" %% "tapir-openapi-docs"       % tapirVersion,
+  "com.softwaremill.sttp.tapir" %% "tapir-openapi-circe-yaml" % tapirVersion,
 
 //  "co.fs2"        %% "fs2-core"    % fs2Version,
   "org.typelevel" %% "cats-effect" % "3.2.9",

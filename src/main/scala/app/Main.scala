@@ -1,8 +1,8 @@
 package app
 
-import app.payment.PaymentRoutes
 import cats.effect.{ ExitCode, IO, IOApp }
 import domain.repositories.PaymentRepositoryImpl
+import endpoints.payment.PaymentRoutes
 import infrastructure.database.doobie.DoobieTransactor
 import org.flywaydb.core.Flyway
 import org.http4s.blaze.server.BlazeServerBuilder

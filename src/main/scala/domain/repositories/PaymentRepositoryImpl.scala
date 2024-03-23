@@ -2,9 +2,9 @@ package domain.repositories
 
 import cats.effect.IO
 import domain.models.Payment
+import domain.models.Payment._
 import doobie.implicits._
 import doobie.util.transactor.Transactor
-import domain.models.Payment._
 
 import java.util.UUID
 
