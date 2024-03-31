@@ -1,7 +1,7 @@
-package domain.repositories
+package domain.repositories.payment
 
 import cats.effect.IO
-import domain.models.Payment
+import domain.models.{ Payment, PaymentRequest }
 import domain.models.Payment._
 import doobie.implicits._
 import doobie.util.transactor.Transactor
@@ -10,10 +10,10 @@ import java.util.UUID
 
 class PaymentRepositoryImpl(transactor: Transactor[IO]) extends PaymentRepository {
 
-  override def create(payment: Payment): IO[Either[Throwable, UUID]] = {
+  override def create(payment: PaymentRequest): IO[Either[Throwable, UUID]] = {
     sql"""
-         |INSERT INTO based.payments (amount, description)
-         |VALUES (${payment.amount}, ${payment.description})
+         |INSERT INTO based.payment (user_id, amount, description, created_at)
+         |VALUES (${payment.userId},${payment.amount}, ${payment.description}, CURRENT_TIMESTAMP)
        """
       .stripMargin
       .update
@@ -23,7 +23,7 @@ class PaymentRepositoryImpl(transactor: Transactor[IO]) extends PaymentRepositor
   }
 
   override def findById(id: UUID): IO[Either[Throwable, Option[Payment]]] = {
-    sql"SELECT id, amount, description FROM based.payments WHERE id = ${id.toString}::uuid"
+    sql"SELECT id, user_id, amount, description, created_at FROM based.payment WHERE id = ${id.toString}::uuid"
       .query[Payment]
       .option
       .attemptSql
@@ -31,7 +31,7 @@ class PaymentRepositoryImpl(transactor: Transactor[IO]) extends PaymentRepositor
   }
 
   def getAll: IO[Either[Throwable, List[Payment]]] =
-    sql"SELECT id, amount, description FROM based.payments"
+    sql"SELECT id, user_id, amount, description, created_at FROM based.payment"
       .query[Payment]
       .to[List]
       .attemptSql
@@ -39,7 +39,7 @@ class PaymentRepositoryImpl(transactor: Transactor[IO]) extends PaymentRepositor
 
   override def update(payment: Payment): IO[Either[Throwable, Unit]] =
     sql"""
-         |UPDATE based.payments
+         |UPDATE based.payment
          |SET amount = ${payment.amount}, description = ${payment.description}
          |WHERE id = ${payment.id}
        """
@@ -54,7 +54,7 @@ class PaymentRepositoryImpl(transactor: Transactor[IO]) extends PaymentRepositor
       }
 
   override def delete(id: UUID): IO[Either[Throwable, Unit]] =
-    sql"DELETE FROM payments WHERE id = $id".update
+    sql"DELETE FROM based.payment WHERE id = $id".update
       .run
       .attemptSql
       .transact(transactor)

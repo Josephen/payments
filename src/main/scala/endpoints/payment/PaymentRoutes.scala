@@ -1,7 +1,7 @@
 package endpoints.payment
 
 import cats.effect.IO
-import domain.models.Payment
+import domain.models.{ Payment, PaymentRequest }
 import org.http4s.circe.CirceEntityEncoder._
 import org.http4s.circe.{ jsonEncoderOf, jsonOf }
 import org.http4s.dsl.io._
@@ -16,7 +16,9 @@ class PaymentRoutes(
 ) {
 
   implicit val paymentDecoder: EntityDecoder[IO, Payment] = jsonOf[IO, Payment]
-  implicit val paymentEncoder: EntityEncoder[IO, Payment] = jsonEncoderOf[IO, Payment]
+//  implicit val paymentEncoder: EntityEncoder[IO, Payment] = jsonEncoderOf[IO, Payment]
+
+  implicit val paymentCreateRequestDecoder: EntityDecoder[IO, PaymentRequest] = jsonOf[IO, PaymentRequest]
 
   implicit val paymentListEncoder: EntityEncoder[IO, List[Payment]] = jsonEncoderOf[IO, List[Payment]]
 
@@ -30,7 +32,7 @@ class PaymentRoutes(
       // Создание платежа
       case req @ POST -> Root / "payments" =>
         for {
-          payment <- req.as[Payment]
+          payment <- req.as[PaymentRequest]
           createdId <- paymentService.create(payment)
           resp <- createdId.fold(
             error => BadRequest(error.message),

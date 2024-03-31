@@ -1,7 +1,7 @@
 package app
 
 import cats.effect.{ ExitCode, IO, IOApp }
-import domain.repositories.PaymentRepositoryImpl
+import domain.repositories.payment.PaymentRepositoryImpl
 import endpoints.payment.PaymentRoutes
 import infrastructure.database.doobie.DoobieTransactor
 import org.flywaydb.core.Flyway

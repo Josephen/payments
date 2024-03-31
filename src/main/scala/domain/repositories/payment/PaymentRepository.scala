@@ -1,13 +1,13 @@
-package domain.repositories
+package domain.repositories.payment
 
 import cats.effect.IO
-import domain.models.Payment
+import domain.models.{ Payment, PaymentRequest }
 
 import java.util.UUID
 
 trait PaymentRepository {
 
-  def create(payment: Payment): IO[Either[Throwable, UUID]]
+  def create(payment: PaymentRequest): IO[Either[Throwable, UUID]]
 
   def getAll: IO[Either[Throwable, List[Payment]]]
 

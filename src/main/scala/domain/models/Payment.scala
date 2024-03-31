@@ -11,7 +11,7 @@ import java.util.UUID
 
 case class Payment(
   id: UUID,
-//  userId,
+  userId: UUID,
   amount: BigDecimal,
   description: String,
   createdAt: LocalDateTime
@@ -27,8 +27,8 @@ object Payment {
     Meta[String].timap(UUID.fromString)(_.toString)
 
   implicit val paymentRead: Read[Payment] =
-    Read[(UUID, BigDecimal, String, LocalDateTime)].map {
-      case (id, amount, description, createdAt) => Payment(id, amount, description, createdAt)
+    Read[(UUID, UUID, BigDecimal, String, LocalDateTime)].map {
+      case (id, userId, amount, description, createdAt) => Payment(id, userId, amount, description, createdAt)
     }
 
   implicit val bigDecimalGet: Get[BigDecimal] =

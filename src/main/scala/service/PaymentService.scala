@@ -1,8 +1,8 @@
 package service
 
 import cats.effect.IO
-import domain.models.Payment
-import domain.repositories.PaymentRepository
+import domain.models.{ Payment, PaymentRequest }
+import domain.repositories.payment.PaymentRepository
 import utils.ImplicitsConversions._
 import utils.PaymentError
 
@@ -11,7 +11,7 @@ import java.util.UUID
 
 class PaymentService(paymentRepo: PaymentRepository) {
 
-  def create(payment: Payment): IO[Either[PaymentError, UUID]] = {
+  def create(payment: PaymentRequest): IO[Either[PaymentError, UUID]] = {
     if (payment.amount < 0) {
       IO.pure(Left(PaymentError.amountError))
     } else {
